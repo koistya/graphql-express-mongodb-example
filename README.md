@@ -13,8 +13,10 @@ $ npm install
 $ npm start
 ```
 
-* [http://localhost:3000/](http://localhost:3000/) - Writes a record to the MongoDb database
-* [http://localhost:3000/graphql?raw&query={log}](http://localhost:3000/graphql?raw&query={log}) - A GraphQL endpoint that lists db records
+* [http://localhost:3000/](http://localhost:3000/) — demo page that writes a record to the MongoDb database
+* [http://localhost:3000/graphql?raw&query={log}](http://localhost:3000/graphql?raw&query={log}) — a GraphQL endpoint that lists db records
+
+### Source Files
 
 #### `package.json`
 
@@ -39,7 +41,6 @@ $ npm start
     "babel-preset-stage-0": "^6.5.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "babel-node ./server.js"
   }
 }
@@ -136,6 +137,7 @@ export default schema;
 
 ### Related Projects
 
+* [GraphQL.js](https://github.com/graphql/graphql-js) — A reference implementation of GraphQL for JavaScript
 * [React Starter Kit](https://github.com/kriasoft/react-starter-kit) — Isomorphic web app boilerplate (Node.js, GraphQL, React)
 * [Babel Starter Kit](https://github.com/kriasoft/babel-starter-kit) — JavaScript library boilerplate (ES2015+, Babel)
 
