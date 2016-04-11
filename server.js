@@ -3,6 +3,7 @@ import express from 'express';
 import graphql from 'express-graphql';
 import { MongoClient } from 'mongodb';
 import schema from './data/schema';
+import homeRoute from './routes/home';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -15,19 +16,8 @@ app.use('/graphql', graphql(req => ({
   rootValue: { db: req.app.locals.db }
 })));
 
-app.get('/', async (req, res, next) => {
-  try {
-    const db = req.app.locals.db;
-    await db.collection('log').insertOne({
-      time: new Date(),
-      ip: req.ip,
-      message: 'Homepage visit'
-    });
-    res.send('<h1>Hello, world!</h1>');
-  } catch (err) {
-    next(err);
-  }
-});
+// Register Express.js route(s)
+app.use('/', homeRoute);
 
 // Create a MonboDB connection pool and start the Node.js app
 MongoClient.connect('mongodb://localhost:27017/demo', { promiseLibrary: Promise })

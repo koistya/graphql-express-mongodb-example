@@ -1,7 +1,10 @@
 # GraphQL Server Example
 
-> A minimalistic GraphQL server example built with Node.js, Express, MongoDB Native
-> Driver and ES2015+ async/await syntax via Babel
+> A minimalistic GraphQL server example built with Node.js, Express, MongoDB
+> Native Driver and ES2015+ async/await syntax via Babel. It demonstrates how to
+> register a GraphQL middleware in Node.js/Express app, how to create a MongoDB
+> connection pool and share it between Express routes, middleware functions and
+> GraphQL "resolve" methods.
 
 ### Getting Started
 
@@ -13,7 +16,7 @@ $ npm start
 * [http://localhost:3000/](http://localhost:3000/) - Writes a record to the MongoDb database
 * [http://localhost:3000/graphql?raw&query={log}](http://localhost:3000/graphql?raw&query={log}) - A GraphQL endpoint that lists db records
 
-### `package.json`
+#### `package.json`
 
 ```json
 {
@@ -42,7 +45,7 @@ $ npm start
 }
 ```
 
-### `server.js`
+#### `server.js`
 
 ```js
 import Promise from 'bluebird';
@@ -50,6 +53,7 @@ import express from 'express';
 import graphql from 'express-graphql';
 import { MongoClient } from 'mongodb';
 import schema from './data/schema';
+import homeRoute from './routes/home';
 
 const app = express();
 const port = process.env.PORT || 3000;
@@ -62,7 +66,28 @@ app.use('/graphql', graphql(req => ({
   rootValue: { db: req.app.locals.db }
 })));
 
-app.get('/', async (req, res, next) => {
+// Register Express.js route(s)
+app.use('/', homeRoute);
+
+// Create a MonboDB connection pool and start the Node.js app
+MongoClient.connect('mongodb://localhost:27017/demo', { promiseLibrary: Promise })
+  .catch(err => console.error(err.stack))
+  .then(db => {
+    app.locals.db = db; // See http://expressjs.com/en/4x/api.html#app.locals
+    app.listen(port, () => {
+      console.log(`Node.js app is listening at http://localhost:${port}/`);
+    });
+  });
+```
+
+#### `routes/home.js`
+
+```js
+import { Router } from 'express';
+
+const router = new Router();
+
+router.get('/', async (req, res, next) => {
   try {
     const db = req.app.locals.db;
     await db.collection('log').insertOne({
@@ -76,18 +101,10 @@ app.get('/', async (req, res, next) => {
   }
 });
 
-// Create a MonboDB connection pool and start the Node.js app
-MongoClient.connect('mongodb://localhost:27017/demo', { promiseLibrary: Promise })
-  .catch(err => console.error(err.stack))
-  .then(db => {
-    app.locals.db = db; // See http://expressjs.com/en/4x/api.html#app.locals
-    app.listen(port, () => {
-      console.log(`Node.js app is listening at http://localhost:${port}/`);
-    });
-  });
+export default router;
 ```
 
-### `data/schema.js`
+#### `data/schema.js`
 
 ```js
 import {
@@ -117,7 +134,7 @@ const schema = new GraphQLSchema({
 export default schema;
 ```
 
-## Related Projects
+### Related Projects
 
 * [React Starter Kit](https://github.com/kriasoft/react-starter-kit) — Isomorphic web app boilerplate (Node.js, GraphQL, React)
 * [Babel Starter Kit](https://github.com/kriasoft/babel-starter-kit) — JavaScript library boilerplate (ES2015+, Babel)
