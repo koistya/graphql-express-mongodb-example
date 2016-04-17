@@ -11,6 +11,7 @@ const app = express();
 const port = process.env.PORT || 3000;
 
 // Compiles client-side JavaScript code on the fly
+// https://github.com/webpack/webpack-dev-middleware
 if (process.env.NODE_ENV !== 'production') {
   const webpack = require('webpack');
   const webpackMiddleware = require('webpack-dev-middleware');
