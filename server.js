@@ -27,8 +27,20 @@ app.use('/graphql', graphql(req => ({
   rootValue: { db: req.app.locals.db }
 })));
 
-// Register Express.js route(s)
-app.use('/test', require('./routes/test').default);
+// Database access example
+app.get('/test', async (req, res, next) => {
+  try {
+    const db = req.app.locals.db;
+    await db.collection('log').insertOne({
+      time: new Date(),
+      ip: req.ip,
+      message: '/test visit'
+    });
+    res.send('<h1>Hello, world!</h1>');
+  } catch (err) {
+    next(err);
+  }
+});
 
 // Serve an empty HTML page for all requests (SPA)
 app.get('*', (req, res) => {

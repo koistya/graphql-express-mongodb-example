@@ -20,6 +20,7 @@ const config = {
         include: [
           path.resolve(__dirname, '../components'),
           path.resolve(__dirname, '../core'),
+          path.resolve(__dirname, '../routes'),
           path.resolve(__dirname, '../client.js'),
         ],
         query: {
