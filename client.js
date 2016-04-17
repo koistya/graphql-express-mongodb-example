@@ -1,5 +1,6 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import history from './core/history';
 import Layout  from './components/Layout/Layout';
 
 const routes = {
@@ -11,9 +12,9 @@ const routes = {
 
 const container = document.getElementById('root');
 
-function render() {
+history.listen(location => {
   try {
-    const path = window.location.hash.substr(1) || '/';
+    const path = location.pathname;
     console.log(path);
     const component = routes[path] || routes['/404'];
     ReactDOM.render(component, container);
@@ -21,7 +22,4 @@ function render() {
     const component = routes['/error'];
     ReactDOM.render(component, container);
   }
-}
-
-window.addEventListener('hashchange', () => render());
-render();
+});

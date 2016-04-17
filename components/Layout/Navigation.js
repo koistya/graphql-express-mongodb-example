@@ -1,4 +1,5 @@
 import React, { Component, PropTypes } from 'react';
+import Link from '../Link';
 
 class Navigation extends Component {
 
@@ -13,9 +14,9 @@ class Navigation extends Component {
   render() {
     return (
       <div className="mdl-navigation" ref={node => this.root = node}>
-        <a className="mdl-navigation__link" href="#/">Home</a>
-        <a className="mdl-navigation__link" href="#/about">About Us</a>
-        <a className="mdl-navigation__link" href="#/not-found">Not Found</a>
+        <Link className="mdl-navigation__link" href="/">Home</Link>
+        <Link className="mdl-navigation__link" href="/about">About Us</Link>
+        <Link className="mdl-navigation__link" href="/not-found">Not Found</Link>
       </div>
     );
   }
