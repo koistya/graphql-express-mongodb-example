@@ -4,12 +4,30 @@ const config = {
 
   context: path.resolve(__dirname, '../'),
 
-  entry: path.resolve(__dirname, '../client.js'),
+  entry: './client.js',
 
   output: {
     path: path.resolve(__dirname, '../dist'),
-    publicPath: '/'
+    publicPath: '/',
+    filename: 'bundle.js'
   },
+
+  // What Webpack should print to a console window
+  stats: {
+    colors: true,
+    reasons: true,
+    hash: false,
+    version: false,
+    timings: true,
+    chunks: false,
+    chunkModules: false,
+    cached: false,
+    cachedAssets: false
+  },
+
+  // Configure source maps
+  debug: true,
+  devtool: 'cheap-module-eval-source-map',
 
   module: {
 

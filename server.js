@@ -16,7 +16,7 @@ if (process.env.NODE_ENV !== 'production') {
   const webpack = require('webpack');
   const webpackMiddleware = require('webpack-dev-middleware');
   const webpackConfig = require('./tools/webpack.config').default;
-  app.use(webpackMiddleware(webpack(webpackConfig)));
+  app.use(webpackMiddleware(webpack(webpackConfig), { stats: webpackConfig.stats}));
 }
 
 // Register GraphQL middleware
